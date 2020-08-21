@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style_content %}
+    <link rel="stylesheet" href="{% static 'css/CultivoLista.css' %}">
+    <link rel="stylesheet" href="{% static 'css/CultivoRegistro.css' %}">
+{% endblock style_content %}
+
+{% block content %}
+    <section id="section-container">
+        <div class="container">
+            <div class="row fila">
+                <div class="col-12 text-center pt-3 pb-2">
+                    <h2>Cultivos disponibles</h2>
+                </div>
+            </div>
+            <div class="row fila mt-4">
+                <div class="col-12">
+                    <div class="list-group">
+                        {% for cultivo in  object_list%}
+                            <a href="{% url 'cultivos:detalle_cultivo' pk=cultivo.pk %}" class="list-group-item list-group-item-action flex-column">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <h3 class="mb-1">{{ cultivo.nombre }}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h5>Dificultad: {{ cultivo.get_dificultad_display }}</h5>
+                                                <p>Temperatura max: <strong>{{ cultivo.temp_max }} C°</strong><br>
+                                                   Temperatura min: <strong>{{ cultivo.temp_min }} C°</strong> <br>
+                                                   Humedad de suelo max: <strong>{{ cultivo.hum_suelo_max }} %</strong> <br>
+                                                   Humedad de suelo min: <strong>{{ cultivo.hum_suelo_min }} %</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col4">
+                                        <img src="{{ cultivo.foto.url }}" class="img-thumbnail" alt="Responsive image">
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

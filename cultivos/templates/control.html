@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style_content %}
+    <link rel="stylesheet" href="{% static 'css/CultivoRegistro.css' %}">
+    <link rel="stylesheet" href="{% static 'css/CultivoControl.css' %}">
+{% endblock style_content %}
+
+{% block content %}
+
+{% if cultivo %}
+    
+    <section id="section-container">
+        <div class="container">
+            <div class="row fila">
+                <div class="col-12 text-center pt-3 pb-2">
+                    <h2>Centro de monitoreo</h2>
+                </div>
+            </div>
+            <div class="row fila mt-4">
+                <div class="col-12 text-center mb-3">
+                    <h3>Información del cultivo</h3>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <h5>Cultivo actual:</h5>
+                    <h4>{{ cultivo.nombre }}</h4>
+                    <p>Temperatura maxima: <br>
+                    <strong id="ref_temp_max">{{cultivo.temp_max}} C°</strong> <br>
+                    Temperatura minima: <br>
+                    <strong id="ref_temp_min">{{cultivo.temp_min}} C°</strong> <br>
+                    Humedad relativa del suelo maxima: <br>
+                    <strong id="ref_hum_suelo_max">{{cultivo.hum_suelo_max}} %</strong></p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <p>Humedad relativa del suelo minima: <br>
+                    <strong id="ref_hum_suelo_min">{{cultivo.hum_suelo_min}} %</strong> <br>
+                    Humedad relativa del aire maxima: <br>
+                    <strong id="ref_hum_aire_max">{{cultivo.hum_aire_max}} %</strong> <br>
+                    Huemdad relativa del aire minima: <br>
+                    <strong id="ref_hum_aire_min">{{cultivo.hum_aire_min}} %</strong></p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <img src="{{ cultivo.foto.url }}" alt="Responsive image" class="img-thumbnail">
+                </div>
+            </div>
+            <div class="row fila mt-4">
+                <div class="col-12 text-center mb-3">
+                    <h3>Información de la siembra</h3>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                   <p>Estado de la siembra: <br>
+                    <strong>{{historial_cultivo.get_estado_display}}</strong>
+                   </p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                   <p>Tiempo desde la siembra: <br>
+                   <strong>{{historial_cultivo.fecha_inicio|timesince}}</strong>
+                   </p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <p>Tiempo aproximado hasta cosecha: <br>
+                    <strong>{{historial_cultivo.fecha_fin|timeuntil}}</strong>
+                    </p>
+                </div>
+                
+                <div class="col-12 text-center mt-3">
+                    <h4>Temperatura actual del aire </h4>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Sensor superior: <strong id="temp_aire_1"> </strong> </p>
+                   <canvas id="can_temp_aire_1"></canvas>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Sensor inferior <strong id="temp_aire_2"></strong></p>
+                   <canvas id="can_temp_aire_2"></canvas>
+                </div>
+                
+                <div class="col-12 text-center mt-3">
+                    <h4>Humedad actual del aire </h4>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Sensor superior: <strong id="hum_aire_1"> </strong> </p>
+                   <canvas id="can_hum_aire_1"></canvas>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Sensor inferior <strong id="hum_aire_2"></strong></p>
+                   <canvas id="can_hum_aire_2"></canvas>
+                </div>
+
+                <div class="col-12 text-center mt-3">
+                    <h4>Humedad actual del suelo </h4>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Parcela 1: <strong id="hum_suelo_1"> </strong> </p>
+                   <canvas id="can_hum_suelo_1"></canvas>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Parcela 2:  <strong id="hum_suelo_2"></strong></p>
+                   <canvas id="can_hum_suelo_2"></canvas>
+                </div>
+                <div class="col-12 col-md-6">
+                   <p>Parcela 3: <strong id="hum_suelo_3"></strong></p>
+                   <canvas id="can_hum_suelo_3"></canvas>
+                </div>
+            </div>
+            <div class="row fila mt-4 pt-3 justify-content-around">
+                <button type="button" class="btn btn-lg btn-outline-success" data-toggle="modal" data-target="#exampleModal">Cultivo cosechado</button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">¿Ya cosechaste este cultivo?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <div class="modal-body">
+                            <p>Cuentanos como te fue con tu cultivo indicando aca el peso de tu cosecha</p>
+                            <form>
+                                <div class="form-group">
+                                    <label for="peso-cosecha" class="col-form-label">Peso de la cosecha (Kg)</label>
+                                    <input type="number" step="0.01" class="form-control" id="peso-cosecha">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="fin-cosecha"type="button" class="btn btn-outline-success">Terminar cosecha</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+{% endblock content %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q==" crossorigin="anonymous"></script>
+<script src="{% static 'js/control.js' %}"></script>
+{% endblock scripts %}

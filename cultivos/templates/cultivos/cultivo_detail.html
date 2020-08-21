@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style_content %}
+<link rel="stylesheet" href="{% static 'css/CultivoDetail.css' %}">
+<link rel="stylesheet" href="{% static 'css/CultivoRegistro.css' %}">
+{% endblock style_content %}
+
+{% block content %}
+    <section id="section-container">
+        <div class="container">
+            <div class="row fila">
+                <div class="col-12 col-md-4">
+                    <img src="{{ cultivo.foto.url }}" alt="Responsive image" class="img-thumbnail">
+                </div>
+                <div class="col-12 col-md-6 column ¿">
+                    <h3>Nombre:</h3>
+                    <h2>{{ cultivo.nombre }}</h2><br>
+                    <h3>Dificultad:</h3>
+                    <h2>{{ cultivo.get_dificultad_display }}</h2>
+                </div>
+            </div>
+            <div class="row fila ">
+                <div class="col-12 text-center">
+                    <h3>Necesidades edafoclimaticas</h3>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Temperatura minima:</h5>
+                    <h6>{{ cultivo.temp_min }} C°</h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Temperatura maxima:</h5>
+                    <h6>{{ cultivo.temp_max }} C°</h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Humedad relativa del aire minima </h5>
+                    <h6>{{ cultivo.hum_aire_min }} %</h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Humedad relativa del aire maxima:</h5>
+                    <h6>{{ cultivo.hum_aire_max}} %</h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Humedad relativa del suelo minima</h5>
+                    <h6>{{ cultivo.hum_suelo_min }} %</h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Humedad relativa del suelo maxima </h5>
+                    <h6>{{ cultivo.hum_suelo_max }} %</h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 colDatos">
+                    <h5>Tiempo estimado de cosecha </h5>
+                    <h6>{{cultivo.tiempo_cosecha}} Dias</h6>
+                </div>
+            </div>
+            <div class="row fila">
+                <div class="col-12 text-center">
+                    <h3>Descripción del cultivo</h3>
+                </div>
+                <div class="col-12">
+                    <p>{{ cultivo.descripcion|linebreaks }}</p>
+                </div>
+            </div>
+            <div class="row fila justify-content-center">
+                <div class="col-12 text-center">
+                    <h3>Recomendaciones generales para el cultivo</h3>
+                </div>
+                <div class="col-12 mt-3">
+                    {{ cultivo.recomendaciones_generales|linebreaks }}
+                </div>
+
+                <p id="pk_cultivo" class="text-hide">{{cultivo.pk}}</p>
+                
+                <div class="col-12">
+                    <div id="fail-alert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+                        <strong>Advertencia:</strong> Te sugerimos terminar con tu cultivo actual, si estas seguro de cambiarlo vuelve a hacer click en el boton
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div id="done-alert" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
+                        <strong>Listo!</strong> Has comenzado con un nuevo cultivo
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-outline-success btn-lg mt-4 mb-3">Empezar a cultivar</button>
+            </div>
+            
+        </div>
+    </section>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/CultivoDetail.js' %}"></script>
+{% endblock scripts %}

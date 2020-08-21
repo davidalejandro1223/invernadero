@@ -1,0 +1,12 @@
+.fila {
+  background-color: white;
+  border-radius: 1em;
+  margin: 1em 0;
+}
+
+.list-group-item {
+  border: none;
+  border-bottom-color: rgba(0, 0, 0, 0.125);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
